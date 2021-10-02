@@ -123,3 +123,5 @@ feed:
   
 exclude:
   - settings.ini
+
+encoding: utf-8
