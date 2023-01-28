@@ -14,6 +14,7 @@
     "gatsby-plugin-feed": "^5.5.0",
     "gatsby-plugin-image": "^3.5.0",
     "gatsby-plugin-manifest": "^5.5.0",
+    "gatsby-plugin-postcss": "^6.5.0",
     "gatsby-plugin-sharp": "^5.5.0",
     "gatsby-remark-images": "^7.5.0",
     "gatsby-remark-prismjs": "^7.5.0",
@@ -21,6 +22,7 @@
     "gatsby-source-filesystem": "^5.5.0",
     "gatsby-transformer-remark": "^6.5.0",
     "gatsby-transformer-sharp": "^5.5.0",
+    "postcss": "^8.4.21",
     "prismjs": "^1.29.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
