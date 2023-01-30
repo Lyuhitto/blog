@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Link } from "gatsby"
-import Navbar from "./Navbar/Navbar"
-import Footer from "./Footer/Footer"
+import Navbar from "../Navbar/Navbar"
+import Footer from "../Footer/Footer"
 
 const Layout = ({ children }) => {
   return (

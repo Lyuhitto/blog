@@ -1,7 +1,11 @@
-import React from 'react'
+import * as React from 'react'
+
+import Layout from '../components/Layout/Layout'
 
 export default function posts() {
   return (
-    <div>posts</div>
+    <Layout>
+      <div>posts</div>
+    </Layout>
   )
 }
