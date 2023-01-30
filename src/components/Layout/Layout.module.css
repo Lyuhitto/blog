@@ -1,0 +1,17 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.navbarWrapper {
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+.mainWrapper {
+  flex-grow: 1;
+}
+.footerWrapper {
+  width: 100%;
+  background-color: var(--color-footer-background);
+}
