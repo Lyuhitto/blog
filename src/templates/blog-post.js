@@ -1,9 +1,9 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 
-import Bio from "../components/bio"
 import Seo from "../components/seo"
 import Layout from '../components/Layout/Layout';
+import Bio from './../components/Bio/Bio';
 
 const BlogPostTemplate = ({
   data: { previous, next, site, markdownRemark: post },
