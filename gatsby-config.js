@@ -12,9 +12,9 @@ module.exports = {
     title: `SUZI의 개발 블로그`,
     author: {
       name: `SUZI`,
-      summary: `꾸준히 발전하는 새내기 프론트 엔드 개발자 SUZI입니다. 항상 과정을 기록하고 있습니다.`,
+      summary: `꾸준히 발전하는 새내기 프론트엔드 개발자 SUZI입니다. 항상 과정을 기록하고 있습니다.`,
     },
-    description: `프론트 엔드에 푹 빠진 SUZI의 개발 기록장`,
+    description: `프론트엔드에 푹 빠진 SUZI의 개발 기록장`,
     siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
     social: {
       twitter: `kylemathews`,
