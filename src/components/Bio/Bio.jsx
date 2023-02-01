@@ -64,18 +64,18 @@ const Bio = () => {
           <ul className={socialLinks}>
             <li className={socialItem}>
               <a
-                href={`http://${social?.email || ``}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`mailto:${social?.email || ``}`}
+                aria-label='이메일'
               >
                 <AiOutlineMail />
               </a>
             </li>
             <li className={socialItem}>
               <a
-                href={`http://${social?.github || ``}`}
+                href={`https://github.com/${social?.github || ``}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label='깃허브'
               >
                 <AiOutlineGithub />
               </a>
