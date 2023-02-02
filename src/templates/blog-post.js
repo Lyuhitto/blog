@@ -1,9 +1,10 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import kebabCase from "lodash.kebabcase"
 
 import Seo from "../components/seo"
-import Layout from '../components/Layout/Layout';
-import Bio from './../components/Bio/Bio';
+import Layout from "../components/Layout/Layout"
+import Bio from "./../components/Bio/Bio"
 
 const BlogPostTemplate = ({
   data: { previous, next, site, markdownRemark: post },
@@ -26,7 +27,16 @@ const BlogPostTemplate = ({
           dangerouslySetInnerHTML={{ __html: post.html }}
           itemProp="articleBody"
         />
-        <div>{post.frontmatter.tags}</div>
+        <div>
+          <ul>
+            {post.frontmatter.tags &&
+              post.frontmatter.tags.map((tag, idx) => (
+                <li key={kebabCase(tag)}>
+                  <Link to={`/tags/${kebabCase(tag)}`}>{kebabCase(tag)}</Link>
+                </li>
+              ))}
+          </ul>
+        </div>
         <hr />
         <footer>
           <Bio />
