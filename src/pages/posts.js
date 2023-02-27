@@ -6,6 +6,10 @@ import Layout from "../components/Layout/Layout"
 import Seo from "../components/seo"
 import { useState } from "react"
 
+// import { useQueryParam, NumberParam, StringParam } from "use-query-params"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import KeywordSearch from "../components/KeywordSearch/KeywordSearch"
+
 export default function Posts({
   // data: {
   //   allMarkdownRemark: { group },
@@ -36,36 +40,32 @@ export default function Posts({
     filteredPosts: [],
     query: "",
   })
-  const handleSearchChange = event => {
-    const query = event.target.value
-    const filteredPosts = allPosts.filter(post => {
-      const { description, title, tags } = post.node.frontmatter
-      return (
-        // input에 입력된 검색어가 desc, title, tags에 해당되는지 검색
-        description.toLowerCase().includes(query.toLowerCase()) ||
-        title.toLowerCase().includes(query.toLowerCase()) ||
-        (tags && tags.join("").toLowerCase().includes(query.toLowerCase()))
-      )
-    })
-    setFiltered({
-      query,
-      filteredPosts,
-    })
-  }
 
   const posts = filtered.query ? filtered.filteredPosts : allPosts
 
   return (
     <Layout>
       <p>현재 개의 포스트가 있습니다</p>
+      <h3>카테고리</h3>
+
       <h3>검색하기</h3>
-      <input
-        type="text"
-        aria-label="검색하기"
-        placeholder="검색어를 입력하세요"
-        value={filtered.query}
-        onChange={handleSearchChange}
-      ></input>
+      <Router>
+        <Routes>
+          <Route
+            path="/posts"
+            element={
+              <>
+                <KeywordSearch
+                  allPosts={allPosts}
+                  filtered={filtered}
+                  setFiltered={setFiltered}
+                />
+              </>
+            }
+          ></Route>
+        </Routes>
+      </Router>
+
       <h3>태그들</h3>
       <section>
         {group.map(tag => (
@@ -113,10 +113,7 @@ export default function Posts({
                       itemProp="description"
                     />
                   </section>
-                  <ul>
-                    {tags &&
-                      tags.map((tag, idx) => <li>{tag}</li>)}
-                  </ul>
+                  <ul>{tags && tags.map((tag, idx) => <li>{tag}</li>)}</ul>
                 </article>
               </li>
             )
