@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom"
 
 export default function KeywordSearch({ filtered, setFiltered, allPosts }) {
   const [searchParams, setSearchParams] = useSearchParams()
-  const searchKeyword = searchParams.get("s")
 
   const handleSearchChange = event => {
     const query = event.target.value
