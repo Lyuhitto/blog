@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { useSearchParams } from "react-router-dom"
 
 export default function KeywordSearch({
@@ -21,10 +21,15 @@ export default function KeywordSearch({
       )
     })
     setFiltered({
+      ...filtered,
       query,
       filteredPosts,
     })
-    searchParams.set("keyword", query)
+    if (query === "") {
+      searchParams.delete("keyword")
+    } else {
+      searchParams.set("keyword", query)
+    }
     setSearchParams(searchParams)
   }
 
@@ -51,12 +56,19 @@ export default function KeywordSearch({
     searchParams.append("tag", targetTag)
   }
   const removeTag = targetTag => {
-    const currentTags = searchParams.getAll("tag").filter(item => item !== targetTag)
-    searchParams.delete('tag')
+    const currentTags = searchParams
+      .getAll("tag")
+      .filter(item => item !== targetTag)
+    searchParams.delete("tag")
     for (let tag of currentTags) {
       searchParams.append("tag", tag)
     }
   }
+
+  React.useEffect(() => {
+    console.log("hi")
+  }, [filtered.query, filtered.selectedTags.join("")])
+
   return (
     <div>
       <input
@@ -81,7 +93,7 @@ export default function KeywordSearch({
             {tag.fieldValue}
           </button>
         ))}
-        <p>현재 선택된 태그들 : {filtered.selectedTags.join(', ')}</p>
+        <p>현재 선택된 태그들 : {filtered.selectedTags.join(", ")}</p>
       </section>
     </div>
   )
