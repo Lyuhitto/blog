@@ -1,7 +1,12 @@
 import React from "react"
 import { useSearchParams } from "react-router-dom"
 
-export default function KeywordSearch({ filtered, setFiltered, allPosts }) {
+export default function KeywordSearch({
+  filtered,
+  setFiltered,
+  group,
+  allPosts,
+}) {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const handleSearchChange = event => {
@@ -19,10 +24,39 @@ export default function KeywordSearch({ filtered, setFiltered, allPosts }) {
       query,
       filteredPosts,
     })
-    searchParams.set("keyword", query);
-    setSearchParams(searchParams);
+    searchParams.set("keyword", query)
+    setSearchParams(searchParams)
   }
 
+  const onTagClick = e => {
+    const targetTag = e.target.value
+
+    if (filtered.selectedTags.includes(targetTag)) {
+      setFiltered(prev => ({
+        ...filtered,
+        selectedTags: prev.selectedTags.filter(item => item !== targetTag),
+      }))
+      removeTag(targetTag)
+    } else {
+      setFiltered(prev => ({
+        ...filtered,
+        selectedTags: [...prev.selectedTags, targetTag],
+      }))
+      addTag(targetTag)
+    }
+
+    setSearchParams(searchParams)
+  }
+  const addTag = targetTag => {
+    searchParams.append("tag", targetTag)
+  }
+  const removeTag = targetTag => {
+    const currentTags = searchParams.getAll("tag").filter(item => item !== targetTag)
+    searchParams.delete('tag')
+    for (let tag of currentTags) {
+      searchParams.append("tag", tag)
+    }
+  }
   return (
     <div>
       <input
@@ -35,6 +69,20 @@ export default function KeywordSearch({ filtered, setFiltered, allPosts }) {
           handleSearchChange(e)
         }}
       />
+
+      <h3>태그들</h3>
+      <section>
+        {group.map(tag => (
+          <button
+            value={tag.fieldValue}
+            key={tag.fieldValue}
+            onClick={onTagClick}
+          >
+            {tag.fieldValue}
+          </button>
+        ))}
+        <p>현재 선택된 태그들 : {filtered.selectedTags.join(', ')}</p>
+      </section>
     </div>
   )
 }
