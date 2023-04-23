@@ -1,9 +1,9 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 
-import Layout from './../components/Layout/Layout';
+import Layout from "./../components/Layout/Layout"
 import Seo from "../components/seo"
-import Bio from './../components/Bio/Bio';
+import Bio from "./../components/Bio/Bio"
 
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
@@ -52,6 +52,12 @@ const BlogIndex = ({ data, location }) => {
                     itemProp="description"
                   />
                 </section>
+                <ul>
+                  {post.frontmatter.tags &&
+                    post.frontmatter.tags.map((tag, idx) => (
+                      <li>{tag}</li>
+                    ))}
+                </ul>
               </article>
             </li>
           )
@@ -68,7 +74,7 @@ export default BlogIndex
  *
  * See: https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-head/
  */
-export const Head = () => <Seo title="All posts" />
+export const Head = () => <Seo title="Index Page" />
 
 export const pageQuery = graphql`
   {
@@ -77,7 +83,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+    allMarkdownRemark(limit: 5, sort: { frontmatter: { date: DESC } }) {
       nodes {
         excerpt
         fields {
@@ -87,6 +93,7 @@ export const pageQuery = graphql`
           date(formatString: "MMMM DD, YYYY")
           title
           description
+          tags
         }
       }
     }
