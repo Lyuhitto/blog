@@ -9,21 +9,13 @@ export default function KeywordSearch({
 }) {
   const [searchParams, setSearchParams] = useSearchParams()
 
+
+
   const handleSearchChange = event => {
     const query = event.target.value
-    const filteredPosts = allPosts.filter(post => {
-      const { description, title, tags } = post.node.frontmatter
-      return (
-        // input에 입력된 검색어가 desc, title, tags에 해당되는지 검색
-        description.toLowerCase().includes(query.toLowerCase()) ||
-        title.toLowerCase().includes(query.toLowerCase()) ||
-        (tags && tags.join("").toLowerCase().includes(query.toLowerCase()))
-      )
-    })
     setFiltered({
       ...filtered,
       query,
-      filteredPosts,
     })
     if (query === "") {
       searchParams.delete("keyword")
@@ -66,7 +58,36 @@ export default function KeywordSearch({
   }
 
   React.useEffect(() => {
-    console.log("hi")
+    setFiltered({
+      ...filtered,
+      query: searchParams.get('keyword')
+    })
+  }, [])
+
+  React.useEffect(() => {
+    const filteredPosts = allPosts.filter(post => {
+      const { description, title, tags } = post.node.frontmatter
+
+      const filterByTags = () => {
+        if (filtered.selectedTags.length <= 0) {
+          return true
+        } else if (tags && filtered.selectedTags.length > 0) {
+          for (let i = 0; i < filtered.selectedTags.length; i++) {
+            if (tags.includes(filtered.selectedTags[i])) return true
+          }
+        }
+        return false
+      }
+
+      return (
+        // input에 입력된 검색어가 desc, title, tags에 해당되는지 검색
+        (description.toLowerCase().includes(filtered.query.toLowerCase()) ||
+          title.toLowerCase().includes(filtered.query.toLowerCase())) &&
+        filterByTags()
+      )
+    })
+
+    setFiltered({ ...filtered, filteredPosts })
   }, [filtered.query, filtered.selectedTags.join("")])
 
   return (
