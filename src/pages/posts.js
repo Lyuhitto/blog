@@ -1,5 +1,5 @@
 import * as React from "react"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
 import { Link, graphql } from "gatsby"
 
 import Layout from "../components/Layout/Layout"
@@ -18,34 +18,25 @@ export default function Posts({
   //   },
   // },
   data,
-  location,
+  // location,
 }) {
   const group = data.allMarkdownRemark.group
   const allPosts = data.allMarkdownRemark.edges
 
-  const [tagList, setTagList] = useState([])
-  const onClickTag = e => {
-    const targetTag = e.target.value
-
-    if (tagList.includes(targetTag)) {
-      setTagList(v => v.filter(item => item !== targetTag))
-    } else {
-      setTagList(v => [...v, targetTag])
-    }
-
-    setTagList(v => v.sort())
-  }
-
   const [filtered, setFiltered] = useState({
     filteredPosts: [],
-    query: "",
+    query:  "",
+    selectedTags: [],
   })
 
-  const posts = filtered.query ? filtered.filteredPosts : allPosts
+  const posts =
+    filtered.query || filtered.selectedTags.length > 0
+      ? filtered.filteredPosts
+      : allPosts
 
   return (
     <Layout>
-      <p>현재 개의 포스트가 있습니다</p>
+      <p>현재 {posts.length}개의 포스트가 있습니다</p>
       <h3>카테고리</h3>
 
       <h3>검색하기</h3>
@@ -56,6 +47,7 @@ export default function Posts({
             element={
               <>
                 <KeywordSearch
+                  group={group}
                   allPosts={allPosts}
                   filtered={filtered}
                   setFiltered={setFiltered}
@@ -65,20 +57,6 @@ export default function Posts({
           ></Route>
         </Routes>
       </Router>
-
-      <h3>태그들</h3>
-      <section>
-        {group.map(tag => (
-          <button
-            value={tag.fieldValue}
-            key={tag.fieldValue}
-            onClick={onClickTag}
-          >
-            {tag.fieldValue}
-          </button>
-        ))}
-      </section>
-      <p>현재선택 :{tagList.join(", ")}</p>
 
       <h3>포스트들</h3>
       {posts.length === 0 ? (
@@ -113,7 +91,9 @@ export default function Posts({
                       itemProp="description"
                     />
                   </section>
-                  <ul>{tags && tags.map((tag, idx) => <li>{tag}</li>)}</ul>
+                  <ul>
+                    {tags && tags.map((tag, idx) => <li key={idx}>{tag}</li>)}
+                  </ul>
                 </article>
               </li>
             )
