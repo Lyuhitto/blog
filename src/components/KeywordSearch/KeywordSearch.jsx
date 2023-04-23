@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 export default function KeywordSearch({
@@ -8,15 +9,14 @@ export default function KeywordSearch({
   allPosts,
 }) {
   const [searchParams, setSearchParams] = useSearchParams()
-
-
+  const [query, setQuery] = useState(
+    searchParams.get("keyword") ? searchParams.get("keyword") : ""
+  )
+  const [selectedTags, setSelectedTags] = useState(searchParams.getAll("tag"))
 
   const handleSearchChange = event => {
     const query = event.target.value
-    setFiltered({
-      ...filtered,
-      query,
-    })
+    setQuery(query)
     if (query === "") {
       searchParams.delete("keyword")
     } else {
@@ -28,20 +28,13 @@ export default function KeywordSearch({
   const onTagClick = e => {
     const targetTag = e.target.value
 
-    if (filtered.selectedTags.includes(targetTag)) {
-      setFiltered(prev => ({
-        ...filtered,
-        selectedTags: prev.selectedTags.filter(item => item !== targetTag),
-      }))
+    if (selectedTags.includes(targetTag)) {
+      setSelectedTags(prev => prev.filter(item => item !== targetTag))
       removeTag(targetTag)
     } else {
-      setFiltered(prev => ({
-        ...filtered,
-        selectedTags: [...prev.selectedTags, targetTag],
-      }))
+      setSelectedTags(prev => [...prev, targetTag])
       addTag(targetTag)
     }
-
     setSearchParams(searchParams)
   }
   const addTag = targetTag => {
@@ -57,23 +50,18 @@ export default function KeywordSearch({
     }
   }
 
-  React.useEffect(() => {
-    setFiltered({
-      ...filtered,
-      query: searchParams.get('keyword')
-    })
-  }, [])
+  console.log(query)
 
   React.useEffect(() => {
     const filteredPosts = allPosts.filter(post => {
       const { description, title, tags } = post.node.frontmatter
 
       const filterByTags = () => {
-        if (filtered.selectedTags.length <= 0) {
+        if (selectedTags.length <= 0) {
           return true
-        } else if (tags && filtered.selectedTags.length > 0) {
-          for (let i = 0; i < filtered.selectedTags.length; i++) {
-            if (tags.includes(filtered.selectedTags[i])) return true
+        } else if (tags && selectedTags.length > 0) {
+          for (let i = 0; i < selectedTags.length; i++) {
+            if (tags.includes(selectedTags[i])) return true
           }
         }
         return false
@@ -81,14 +69,14 @@ export default function KeywordSearch({
 
       return (
         // input에 입력된 검색어가 desc, title, tags에 해당되는지 검색
-        (description.toLowerCase().includes(filtered.query.toLowerCase()) ||
-          title.toLowerCase().includes(filtered.query.toLowerCase())) &&
+        (description.toLowerCase().includes(query.toLowerCase()) ||
+          title.toLowerCase().includes(query.toLowerCase())) &&
         filterByTags()
       )
     })
 
     setFiltered({ ...filtered, filteredPosts })
-  }, [filtered.query, filtered.selectedTags.join("")])
+  }, [query, selectedTags.join("")])
 
   return (
     <div>
@@ -97,7 +85,7 @@ export default function KeywordSearch({
         name="keyword"
         aria-label="검색하기"
         placeholder="검색어를 입력하세요"
-        value={filtered.query}
+        value={query}
         onChange={e => {
           handleSearchChange(e)
         }}
@@ -114,7 +102,7 @@ export default function KeywordSearch({
             {tag.fieldValue}
           </button>
         ))}
-        <p>현재 선택된 태그들 : {filtered.selectedTags.join(", ")}</p>
+        <p>현재 선택된 태그들 : {selectedTags.join(", ")}</p>
       </section>
     </div>
   )

@@ -25,14 +25,10 @@ export default function Posts({
 
   const [filtered, setFiltered] = useState({
     filteredPosts: [],
-    query:  "",
-    selectedTags: [],
   })
 
   const posts =
-    filtered.query || filtered.selectedTags.length > 0
-      ? filtered.filteredPosts
-      : allPosts
+    filtered.filteredPosts.length > 0 ? filtered.filteredPosts : allPosts
 
   return (
     <Layout>
