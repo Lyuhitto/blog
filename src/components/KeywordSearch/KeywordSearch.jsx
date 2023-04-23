@@ -50,8 +50,6 @@ export default function KeywordSearch({
     }
   }
 
-  console.log(query)
-
   React.useEffect(() => {
     const filteredPosts = allPosts.filter(post => {
       const { description, title, tags } = post.node.frontmatter
