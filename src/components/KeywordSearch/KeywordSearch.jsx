@@ -5,7 +5,8 @@ import { useSearchParams } from "react-router-dom"
 export default function KeywordSearch({
   filtered,
   setFiltered,
-  group,
+  tagGroup,
+  categoryGroup,
   allPosts,
 }) {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -13,6 +14,10 @@ export default function KeywordSearch({
     searchParams.get("keyword") ? searchParams.get("keyword") : ""
   )
   const [selectedTags, setSelectedTags] = useState(searchParams.getAll("tag"))
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get("category") ? searchParams.get("category") : "all"
+  )
 
   const handleSearchChange = event => {
     const query = event.target.value
@@ -78,6 +83,7 @@ export default function KeywordSearch({
 
   return (
     <div>
+      <h3>검색하기</h3>
       <input
         type="search"
         name="keyword"
@@ -89,9 +95,22 @@ export default function KeywordSearch({
         }}
       />
 
+      <h3>카테고리</h3>
+      <section>
+        <button value={"all"} key={"all"}>
+          all
+        </button>
+        {categoryGroup &&
+          categoryGroup.map(category => (
+            <button value={category.fieldValue} key={category.fieldValue}>
+              {category.fieldValue}
+            </button>
+          ))}
+      </section>
+
       <h3>태그들</h3>
       <section>
-        {group.map(tag => (
+        {tagGroup.map(tag => (
           <button
             value={tag.fieldValue}
             key={tag.fieldValue}
