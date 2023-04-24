@@ -20,7 +20,8 @@ export default function Posts({
   data,
   // location,
 }) {
-  const group = data.allMarkdownRemark.group
+  const tagGroup = data.allMarkdownRemark.group
+  const categoryGroup = data.categoriesGroup.group
   const allPosts = data.allMarkdownRemark.edges
 
   const [filtered, setFiltered] = useState({
@@ -33,9 +34,9 @@ export default function Posts({
   return (
     <Layout>
       <p>현재 {posts.length}개의 포스트가 있습니다</p>
-      <h3>카테고리</h3>
+      
 
-      <h3>검색하기</h3>
+      
       <Router>
         <Routes>
           <Route
@@ -43,7 +44,8 @@ export default function Posts({
             element={
               <>
                 <KeywordSearch
-                  group={group}
+                  tagGroup={tagGroup}
+                  categoryGroup={categoryGroup}
                   allPosts={allPosts}
                   filtered={filtered}
                   setFiltered={setFiltered}
@@ -126,6 +128,11 @@ export const pageQuery = graphql`
             tags
           }
         }
+      }
+    }
+    categoriesGroup: allMarkdownRemark {
+      group(field: { frontmatter: { category: SELECT } }) {
+        fieldValue
       }
     }
   }
