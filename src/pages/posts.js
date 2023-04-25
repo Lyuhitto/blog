@@ -34,9 +34,7 @@ export default function Posts({
   return (
     <Layout>
       <p>현재 {posts.length}개의 포스트가 있습니다</p>
-      
 
-      
       <Router>
         <Routes>
           <Route
@@ -64,7 +62,8 @@ export default function Posts({
           {posts.map(({ node }) => {
             const { excerpt } = node
             const { slug } = node.fields
-            const { title, date, description, tags } = node.frontmatter
+            const { title, date, description, tags, category } =
+              node.frontmatter
 
             return (
               <li key={slug}>
@@ -89,6 +88,7 @@ export default function Posts({
                       itemProp="description"
                     />
                   </section>
+                  <p>{category}</p>
                   <ul>
                     {tags && tags.map((tag, idx) => <li key={idx}>{tag}</li>)}
                   </ul>
@@ -126,6 +126,7 @@ export const pageQuery = graphql`
             title
             description
             tags
+            category
           }
         }
       }
