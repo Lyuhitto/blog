@@ -55,9 +55,22 @@ export default function KeywordSearch({
     }
   }
 
+  const handleCategory = e => {
+    const name = e.target.value
+    setSelectedCategory(name)
+    console.log(name)
+
+    if (name !== "all") {
+      searchParams.set("category", name)
+    } else {
+      searchParams.delete("category", name)
+    }
+    setSearchParams(searchParams)
+  }
+
   React.useEffect(() => {
     const filteredPosts = allPosts.filter(post => {
-      const { description, title, tags } = post.node.frontmatter
+      const { description, title, tags, category } = post.node.frontmatter
 
       const filterByTags = () => {
         if (selectedTags.length <= 0) {
@@ -70,16 +83,25 @@ export default function KeywordSearch({
         return false
       }
 
+      const filterByCategory = () => {
+        if (selectedCategory === "all") {
+          return true
+        } else {
+          return category === selectedCategory ? true : false
+        }
+      }
+
       return (
         // input에 입력된 검색어가 desc, title, tags에 해당되는지 검색
         (description.toLowerCase().includes(query.toLowerCase()) ||
           title.toLowerCase().includes(query.toLowerCase())) &&
-        filterByTags()
+        filterByTags() &&
+        filterByCategory()
       )
     })
 
     setFiltered({ ...filtered, filteredPosts })
-  }, [query, selectedTags.join("")])
+  }, [query, selectedTags.join(""), selectedCategory])
 
   return (
     <div>
@@ -97,12 +119,16 @@ export default function KeywordSearch({
 
       <h3>카테고리</h3>
       <section>
-        <button value={"all"} key={"all"}>
+        <button value={"all"} key={"all"} onClick={handleCategory}>
           all
         </button>
         {categoryGroup &&
           categoryGroup.map(category => (
-            <button value={category.fieldValue} key={category.fieldValue}>
+            <button
+              value={category.fieldValue}
+              key={category.fieldValue}
+              onClick={handleCategory}
+            >
               {category.fieldValue}
             </button>
           ))}
