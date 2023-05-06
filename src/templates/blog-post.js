@@ -32,7 +32,9 @@ const BlogPostTemplate = ({
             {post.frontmatter.tags &&
               post.frontmatter.tags.map((tag, idx) => (
                 <li key={kebabCase(tag)}>
-                  <Link to={`/tags/${kebabCase(tag)}`}>{kebabCase(tag)}</Link>
+                  <Link to={`/posts/?tag=${kebabCase(tag)}`}>
+                    {kebabCase(tag)}
+                  </Link>
                 </li>
               ))}
           </ul>
