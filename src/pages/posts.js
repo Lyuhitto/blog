@@ -9,6 +9,7 @@ import { useState } from "react"
 // import { useQueryParam, NumberParam, StringParam } from "use-query-params"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import KeywordSearch from "../components/KeywordSearch/KeywordSearch"
+import kebabCase from "lodash.kebabcase"
 
 export default function Posts({
   // data: {
@@ -90,7 +91,14 @@ export default function Posts({
                   </section>
                   <p>{category}</p>
                   <ul>
-                    {tags && tags.map((tag, idx) => <li key={idx}>{tag}</li>)}
+                    {tags &&
+                      tags.map((tag, idx) => (
+                        <li key={idx}>
+                          <Link to={`/posts/?tag=${kebabCase(tag)}`}>
+                            {kebabCase(tag)}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </article>
               </li>

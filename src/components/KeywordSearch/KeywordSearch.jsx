@@ -1,3 +1,4 @@
+import kebabCase from 'lodash.kebabcase'
 import * as React from "react"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
@@ -71,12 +72,14 @@ export default function KeywordSearch({
     const filteredPosts = allPosts.filter(post => {
       const { description, title, tags, category } = post.node.frontmatter
 
+      const kebabCaseTags = tags && tags.map(item => kebabCase(item))
+
       const filterByTags = () => {
         if (selectedTags.length <= 0) {
           return true
-        } else if (tags && selectedTags.length > 0) {
+        } else if (kebabCaseTags && selectedTags.length > 0) {
           for (let i = 0; i < selectedTags.length; i++) {
-            if (tags.includes(selectedTags[i])) return true
+            if (kebabCaseTags.includes(selectedTags[i])) return true
           }
         }
         return false
@@ -137,11 +140,11 @@ export default function KeywordSearch({
       <section>
         {tagGroup.map(tag => (
           <button
-            value={tag.fieldValue}
+            value={kebabCase(tag.fieldValue)}
             key={tag.fieldValue}
             onClick={onTagClick}
           >
-            {tag.fieldValue}
+            {kebabCase(tag.fieldValue)}
           </button>
         ))}
         <p>현재 선택된 태그들 : {selectedTags.join(", ")}</p>
