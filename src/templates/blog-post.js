@@ -22,6 +22,9 @@ const BlogPostTemplate = ({
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
           <p>{post.frontmatter.date}</p>
+          <Link to={`/posts/?category=${post.frontmatter.category}`}>
+            {post.frontmatter.category}
+          </Link>
         </header>
         <section
           dangerouslySetInnerHTML={{ __html: post.html }}
@@ -30,7 +33,7 @@ const BlogPostTemplate = ({
         <div>
           <ul>
             {post.frontmatter.tags &&
-              post.frontmatter.tags.map((tag, idx) => (
+              post.frontmatter.tags.map(tag => (
                 <li key={kebabCase(tag)}>
                   <Link to={`/posts/?tag=${kebabCase(tag)}`}>
                     {kebabCase(tag)}
@@ -105,6 +108,7 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         description
         tags
+        category
       }
     }
     previous: markdownRemark(id: { eq: $previousPostId }) {
