@@ -18,12 +18,13 @@ module.exports = {
     siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
     social: {
       twitter: `kylemathews`,
-      email:`contact@sujungkim.dev`,
-      github:`Lyuhitto`
+      email: `contact@sujungkim.dev`,
+      github: `Lyuhitto`,
     },
   },
   plugins: [
     `gatsby-plugin-image`,
+    `gatsby-plugin-typescript`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -124,6 +125,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-postcss`,
-    "gatsby-plugin-use-query-params"
+    "gatsby-plugin-use-query-params",
   ],
 }

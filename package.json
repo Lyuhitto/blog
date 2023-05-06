@@ -16,6 +16,7 @@
     "gatsby-plugin-manifest": "^5.5.0",
     "gatsby-plugin-postcss": "^6.5.0",
     "gatsby-plugin-sharp": "^5.5.0",
+    "gatsby-plugin-typescript": "^5.9.0",
     "gatsby-plugin-use-query-params": "^1.0.1",
     "gatsby-remark-images": "^7.5.0",
     "gatsby-remark-prismjs": "^7.5.0",
