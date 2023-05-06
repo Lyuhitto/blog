@@ -58,7 +58,6 @@ export default function KeywordSearch({
   const handleCategory = e => {
     const name = e.target.value
     setSelectedCategory(name)
-    console.log(name)
 
     if (name !== "all") {
       searchParams.set("category", name)
